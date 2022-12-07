@@ -36,8 +36,8 @@ public class WorkThread extends Thread {
     public void excuteThread() {
         try {
             System.out.println("executeThread() 실행됨");
-            WorkSocket socket = null;
             while (true) {
+                WorkSocket socket = null;
                 synchronized (WORK_SOCKET_LIST) {
                     //TODO 각 WorkThread가 WORK_SOCKET_LIST를 바라보고 있는데, 겹치지 않고 일을 할수 있는지? -> synchronized로 가능한것인지?
                     if (WORK_SOCKET_LIST.size() > 0) {
@@ -130,6 +130,7 @@ public class WorkThread extends Thread {
                     } else if(socket.data != null){
                         System.out.println("write ***");
                         outputStream.write(socket.data);
+                        socket.isWorking = false;
                     } else {
                         System.out.println("이슈 : " + socket.user);
                     }
