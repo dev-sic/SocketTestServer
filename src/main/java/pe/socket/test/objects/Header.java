@@ -7,6 +7,7 @@ public class Header { //Header 클래스
     public static final char QUIT = 'Q';
     public static final char CONNECT = 'C';
     public static final char MESSAGE = 'M';
+    public static final char ROOM_IN = 'I';
 
     public char code; //메시지 코드값
     public int length; //데이터의 길이

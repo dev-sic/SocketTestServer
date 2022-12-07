@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InputStreamThread extends Thread{
-    private List<WorkSocket> sockets = new ArrayList<>();
+    public static List<WorkSocket> sockets = new ArrayList<>();
 
     public void addSocket(Socket socket){
         synchronized (sockets){
@@ -25,6 +25,7 @@ public class InputStreamThread extends Thread{
         }
         while (true){
             synchronized (sockets){
+                //TODO isWorking을 다시 false로 만들어야 하는지?
                 sockets.forEach(work -> {
                     try {
                         if( !work.isWorking && work.socket.getInputStream().available() > 0){

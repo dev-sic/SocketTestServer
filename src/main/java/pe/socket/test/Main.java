@@ -7,7 +7,7 @@ import java.io.IOException;
 public class Main {
     private static WorkThread[] acceptThreads;
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        System.out.println("main 클래스 실행");
 
         ServerSocketTest serverSocketTest = new ServerSocketTest();
         try {
