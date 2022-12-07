@@ -1,9 +1,13 @@
 package pe.socket.test.objects; //pe.socket.test.objects 패키지
 
-import java.nio.ByteBuffer; //ByteBuffer 객체를 사용하기 위한 임포트
+import java.nio.ByteBuffer;
 
 public class Header { //Header 클래스
     public static final int HEADER_LENGTH = 10; //헤더 길이 (코드값 char 2, 데이터 길이 int 4, hash 길이 4)
+    public static final char QUIT = 'Q';
+    public static final char CONNECT = 'C';
+    public static final char MESSAGE = 'M';
+
     public char code; //메시지 코드값
     public int length; //데이터의 길이
     public String hash; //해쉬 키값
