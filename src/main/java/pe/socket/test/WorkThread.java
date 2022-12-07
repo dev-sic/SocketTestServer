@@ -42,7 +42,9 @@ public class WorkThread extends Thread {
                     //TODO 각 WorkThread가 WORK_SOCKET_LIST를 바라보고 있는데, 겹치지 않고 일을 할수 있는지? -> synchronized로 가능한것인지?
                     if (WORK_SOCKET_LIST.size() > 0) {
                         System.out.println("사이즈 : " + WORK_SOCKET_LIST.size());
-                        socket = WORK_SOCKET_LIST.get(0);
+                        synchronized (socket) {
+                            socket = WORK_SOCKET_LIST.get(0);
+                        }
                         WORK_SOCKET_LIST.remove(0);
                     }
                 }
@@ -67,9 +69,7 @@ public class WorkThread extends Thread {
 
                         if (header.code == Header.QUIT) {
                             socket.socket.close();
-                            synchronized(socket){
-                                socket.isWorking = false;
-                            }
+                            socket.isWorking = false;
                             return;
                         } else if (header.code == Header.CONNECT) {
 
@@ -107,9 +107,7 @@ public class WorkThread extends Thread {
 
                                 socket.socket.getOutputStream().write(h.getHeader());
                             }
-                            synchronized(socket){
-                                socket.isWorking = false;
-                            }
+                            socket.isWorking = false;
 
                             synchronized (sockets) {
                                 sockets.forEach(workSocket -> {
