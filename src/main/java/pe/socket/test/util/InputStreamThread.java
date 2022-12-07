@@ -35,14 +35,18 @@ public class InputStreamThread extends Thread {
                                 WorkThread.WORK_SOCKET_LIST.add(work);
                                 System.out.println("WORK Socket list : " + WorkThread.WORK_SOCKET_LIST.size());
                             }
-                            work.isWorking = true;
+                            synchronized (work){
+                                work.isWorking = true;
+                            }
                         }
                         if (!work.isWorking && work.socket.getInputStream().available() > 0) {
                             System.out.println("available() : " + work.socket.getInputStream().available());
                             synchronized (WorkThread.WORK_SOCKET_LIST) {
                                 WorkThread.WORK_SOCKET_LIST.add(work);
                             }
-                            work.isWorking = true;
+                            synchronized (work){
+                                work.isWorking = true;
+                            }
                         }
 
                     } catch (IOException e) {
