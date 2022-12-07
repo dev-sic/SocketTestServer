@@ -28,6 +28,14 @@ public class InputStreamThread extends Thread{
                 //TODO isWorking을 다시 false로 만들어야 하는지?
                 sockets.forEach(work -> {
                     try {
+                        System.out.println("work isworking data size "+ work.isWorking + ", "+work.data);
+                        if( !work.isWorking && work.data != null){
+                            synchronized (WorkThread.WORK_SOCKET_LIST) {
+                                WorkThread.WORK_SOCKET_LIST.add(work);
+                                System.out.println("WORK Socket list : " + WorkThread.WORK_SOCKET_LIST.size());
+                            }
+                            work.isWorking = true;
+                        }
                         if( !work.isWorking && work.socket.getInputStream().available() > 0){
                             System.out.println("available() : " + work.socket.getInputStream().available());
                             synchronized (WorkThread.WORK_SOCKET_LIST) {
@@ -35,6 +43,7 @@ public class InputStreamThread extends Thread{
                             }
                             work.isWorking = true;
                         }
+
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
