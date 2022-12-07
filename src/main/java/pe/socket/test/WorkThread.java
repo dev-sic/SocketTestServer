@@ -45,7 +45,7 @@ public class WorkThread extends Thread{
                         outputStream = socket.getOutputStream();
 
                         if (inputStream.available() > 0) {
-                            //클라이언트에서 받을때
+                            //클라이언트에서 보낸 데이터를 받을때
                             byte[] headerByte = new byte[Header.HEADER_LENGTH];
                             inputStream.read(headerByte);
                             Header header = new Header(headerByte);
@@ -65,6 +65,7 @@ public class WorkThread extends Thread{
 
                                 users.forEach(user1 -> {
                                     if(user1.room == null){
+                                        System.out.println("forEach");
                                         user1.room = room;
                                         room.users.add(user1);
                                         return;
@@ -72,11 +73,18 @@ public class WorkThread extends Thread{
                                 });
                                 users.add(user);
                                 if(room.users.size() > 0){
+                                    System.out.println("방 생성!");
                                     room.users.add(user);
                                     rooms.add(room);
                                     user.room = room;
                                     // TODO: 2022/11/30 방에 있다는 사실을 프로토콜 정의 클라이언트도 받을 준비
                                     // 클라이언트에게 방에 들어왔다는 사실을 알려주는게 핵심.
+
+                                    Header h = new Header();
+                                    h.code = 'I';
+                                    h.length = 0;
+                                    h.hash = "hash";
+                                    outputStream.write(h.getHeader());
                                 }
 
                             } else if (header.code == Header.MESSAGE) {
