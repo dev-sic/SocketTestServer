@@ -27,7 +27,7 @@ public class InputStreamThread extends Thread {
             synchronized (sockets) {
                 sockets.forEach(work -> {
                     try {
-                        System.out.println("work isworking data size " + work.isWorking + ", " + work.data);
+//                        System.out.println("work isworking data size " + work.isWorking + ", " + work.data);
 
                         if (!work.isWorking && work.data != null) {
                             synchronized (WorkThread.WORK_SOCKET_LIST) {

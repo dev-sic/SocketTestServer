@@ -128,6 +128,7 @@ public class WorkThread extends Thread {
 
 
                     } else if(socket.data != null){
+                        System.out.println("write ***");
                         outputStream.write(socket.data);
                     } else {
                         System.out.println("이슈 : " + socket.user);
