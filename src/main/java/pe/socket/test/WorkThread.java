@@ -67,7 +67,9 @@ public class WorkThread extends Thread {
 
                         if (header.code == Header.QUIT) {
                             socket.socket.close();
-                            socket.isWorking = false;
+                            synchronized(socket){
+                                socket.isWorking = false;
+                            }
                             return;
                         } else if (header.code == Header.CONNECT) {
 
@@ -105,7 +107,9 @@ public class WorkThread extends Thread {
 
                                 socket.socket.getOutputStream().write(h.getHeader());
                             }
-                            socket.isWorking = false;
+                            synchronized(socket){
+                                socket.isWorking = false;
+                            }
 
                             synchronized (sockets) {
                                 sockets.forEach(workSocket -> {
