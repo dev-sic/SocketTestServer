@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import static pe.socket.test.Main.acceptThreads;
 import static pe.socket.test.WorkThread.WORK_SOCKET_LIST;
 
 public class InputStreamThread extends Thread {
@@ -43,6 +44,8 @@ public class InputStreamThread extends Thread {
                             if (!work.isWorking && work.socket.getInputStream().available() > 0) {
                                 System.out.println("InputStreamThread > getInputStream().available() : " + work.socket.getInputStream().available());
                                 System.out.println("InputStreamThread > WORK_SOCKET_LIST.size() : " + WORK_SOCKET_LIST.size());
+                                System.out.println("InputStreamThread > sockets.size() : " + sockets.size());
+                                System.out.println("InputStreamThread > acceptThreads.length : " + acceptThreads.length);
                                 synchronized (WORK_SOCKET_LIST) {
                                     WORK_SOCKET_LIST.add(work);
                                 }
