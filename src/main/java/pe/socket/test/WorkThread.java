@@ -71,6 +71,7 @@ public class WorkThread extends Thread {
                         if (header.code == QUIT) {
                             socket.socket.close();
                             socket.isWorking = false;
+                            //TODO sockets에서 아예 삭제해야 하는게 좋을지?
                             return;
                         } else if (header.code == CONNECT) {
 
@@ -114,9 +115,9 @@ public class WorkThread extends Thread {
                                 WORK_SOCKET_LIST.forEach(workSocket -> {
                                     System.out.println("WorkThread > WORK_SOCKET_LIST isWorking 확인 : "+workSocket.isWorking);
                                 });
-                                sockets.forEach(workSocket -> {
-                                    System.out.println("WorkThread > sockets isWorking 확인 : "+workSocket.isWorking);
-                                });
+                                for(int i = 0; i< sockets.size(); i++){
+                                    System.out.println("WorkThread > sockets isWorking 확인 : " + i + "번째 : " + sockets.get(i).isWorking);
+                                }
                             }
 
                             synchronized (sockets) {
