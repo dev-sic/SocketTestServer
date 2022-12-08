@@ -144,6 +144,7 @@ public class WorkThread extends Thread {
                     } else if(socket.data != null){
                         System.out.println("WorkThread > write ***");
                         outputStream.write(socket.data);
+                        socket.data = null;
                         socket.isWorking = false;
                     } else {
                         System.out.println("WorkThread > 이슈 : " + socket.user);
