@@ -12,10 +12,10 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static pe.socket.test.ServerSocketTest.rooms;
 import static pe.socket.test.ServerSocketTest.users;
+import static pe.socket.test.objects.Header.*;
 import static pe.socket.test.util.InputStreamThread.sockets;
 
 public class WorkThread extends Thread {
@@ -60,7 +60,7 @@ public class WorkThread extends Thread {
 
                     if (inputStream.available() > 0) {
                         //클라이언트에서 보낸 데이터를 받아온다.
-                        byte[] headerByte = new byte[Header.HEADER_LENGTH]; //헤더
+                        byte[] headerByte = new byte[HEADER_LENGTH]; //헤더
                         inputStream.read(headerByte);
                         Header header = new Header(headerByte);
 
@@ -68,18 +68,18 @@ public class WorkThread extends Thread {
                         inputStream.read(dataByte);
 
 
-                        if (header.code == Header.QUIT) {
+                        if (header.code == QUIT) {
                             socket.socket.close();
                             socket.isWorking = false;
                             return;
-                        } else if (header.code == Header.CONNECT) {
+                        } else if (header.code == CONNECT) {
 
                             //json 파싱하여 유저 정보를 유저 리스트에 추가
                             User user = new Gson().fromJson(new String(dataByte, StandardCharsets.UTF_8), User.class);
                             socket.user = user;
 
                             Header h = new Header();
-                            h.code = Header.ROOM_IN;
+                            h.code = ROOM_IN;
                             h.length = 0;
                             h.hash = "hash";
 
@@ -133,7 +133,7 @@ public class WorkThread extends Thread {
                                     }
                                 });
                             }
-                        } else if (header.code == Header.MESSAGE) {
+                        } else if (header.code == MESSAGE) {
                             System.out.println("WorkThread > code MESSAGE");
                             synchronized (sockets) {
                                 socket.isWorking = false;
