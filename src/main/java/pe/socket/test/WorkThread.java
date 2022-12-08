@@ -49,11 +49,14 @@ public class WorkThread extends Thread {
                 }
 
                 if (socket != null) {
-                    System.out.println("socket available : " + socket.socket.getInputStream().available());
+//                    System.out.println("socket available : " + socket.socket.getInputStream().available());
 
                     inputStream = socket.socket.getInputStream();
                     outputStream = socket.socket.getOutputStream();
 
+                    System.out.println("socket");
+                    System.out.println("inputStream.available() : " + inputStream.available());
+                    System.out.println("socket.data : " + socket.data);
 
 
                     if (inputStream.available() > 0) {
@@ -106,13 +109,21 @@ public class WorkThread extends Thread {
 
                                 socket.socket.getOutputStream().write(h.getHeader());
                             }
-                            socket.isWorking = false;
-                            WORK_SOCKET_LIST.forEach(workSocket -> {
-                                System.out.println("WORK_SOCKET_LIST isWorking: "+workSocket.isWorking);
-                            });
-                            sockets.forEach(workSocket -> {
-                                System.out.println("sockets isWorking: "+workSocket.isWorking);
-                            });
+
+                            synchronized (sockets){
+                                socket.isWorking = false;
+
+                                WORK_SOCKET_LIST.forEach(workSocket -> {
+                                    System.out.println("WORK_SOCKET_LIST isWorking: "+workSocket.isWorking);
+                                });
+                                sockets.forEach(workSocket -> {
+                                    System.out.println("sockets isWorking: "+workSocket.isWorking);
+                                });
+                            }
+
+
+
+
                             synchronized (sockets) {
                                 sockets.forEach(workSocket -> {
 
