@@ -21,7 +21,7 @@ public class ServerSocketTest {
         while (true){
             Socket socket = serverSocket.accept();
             inputStreamThread.addSocket(socket);
-            System.out.println("someone connected");
+            System.out.println("listener > someone connected");
         }
     }
 

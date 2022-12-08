@@ -35,7 +35,7 @@ public class WorkThread extends Thread {
 
     public void excuteThread() {
         try {
-            System.out.println("executeThread() 실행됨");
+            System.out.println("WorkThread > executeThread() 실행됨");
             while (true) {
                 WorkSocket socket = null;
                 synchronized (WORK_SOCKET_LIST) {
@@ -54,9 +54,9 @@ public class WorkThread extends Thread {
                     inputStream = socket.socket.getInputStream();
                     outputStream = socket.socket.getOutputStream();
 
-                    System.out.println("socket");
-                    System.out.println("inputStream.available() : " + inputStream.available());
-                    System.out.println("socket.data : " + socket.data);
+                    System.out.println("WorkThread > socket");
+                    System.out.println("WorkThread > inputStream.available() : " + inputStream.available());
+                    System.out.println("WorkThread > socket.data : " + socket.data);
 
 
                     if (inputStream.available() > 0) {
@@ -88,7 +88,7 @@ public class WorkThread extends Thread {
 
                             users.forEach(user1 -> {
                                 if (user1.room == null) {
-                                    System.out.println("forEach");
+                                    System.out.println("WorkThread > forEach");
                                     user1.room = room;
                                     room.users.add(user1);
                                     return;
@@ -99,7 +99,7 @@ public class WorkThread extends Thread {
 
 
                             if (room.users.size() > 0) {
-                                System.out.println("방 생성!");
+                                System.out.println("WorkThread > 방 생성!");
                                 room.users.add(user);
                                 rooms.add(room);
                                 user.room = room;
@@ -109,28 +109,23 @@ public class WorkThread extends Thread {
 
                                 socket.socket.getOutputStream().write(h.getHeader());
                             }
-
                             synchronized (sockets){
                                 socket.isWorking = false;
 
                                 WORK_SOCKET_LIST.forEach(workSocket -> {
-                                    System.out.println("WORK_SOCKET_LIST isWorking: "+workSocket.isWorking);
+                                    System.out.println("WorkThread > WORK_SOCKET_LIST isWorking 확인 : "+workSocket.isWorking);
                                 });
                                 sockets.forEach(workSocket -> {
-                                    System.out.println("sockets isWorking: "+workSocket.isWorking);
+                                    System.out.println("WorkThread > sockets isWorking 확인 : "+workSocket.isWorking);
                                 });
                             }
 
-
-
-
                             synchronized (sockets) {
                                 sockets.forEach(workSocket -> {
-
                                     if(room.users.size() > 0) {
-                                        System.out.println("workSocket User name: " + workSocket.user.name);
-                                        System.out.println("클라이언트로 신호 전송" + room.users.get(0).name);
-                                        System.out.println("같은지 여부 : "+ (workSocket.user == room.users.get(0)));
+                                        System.out.println("WorkThread > workSocket User name: " + workSocket.user.name);
+                                        System.out.println("WorkThread > 클라이언트로 신호 전송" + room.users.get(0).name);
+                                        System.out.println("WorkThread > 같은지 여부 : "+ (workSocket.user == room.users.get(0)));
                                         if (workSocket.user == room.users.get(0)) {
                                             workSocket.data = h.getHeader();
                                         }
@@ -143,11 +138,11 @@ public class WorkThread extends Thread {
 
 
                     } else if(socket.data != null){
-                        System.out.println("write ***");
+                        System.out.println("WorkThread > write ***");
                         outputStream.write(socket.data);
                         socket.isWorking = false;
                     } else {
-                        System.out.println("이슈 : " + socket.user);
+                        System.out.println("WorkThread > 이슈 : " + socket.user);
                     }
                 }
             }
