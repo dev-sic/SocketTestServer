@@ -37,6 +37,10 @@ public class InputStreamThread extends Thread {
                                 }
                                 work.isWorking = true;
                             }
+                            System.out.println("InputStreamThread > socket.isConnected() : "+ work.socket.isConnected());
+                            System.out.println("InputStreamThread > socket.isClosed() : "+ work.socket.isClosed());
+                            System.out.println("InputStreamThread > socket : "+ work.socket);
+
                             //input할 데이터가 있을 경우
                             if (!work.isWorking && work.socket.getInputStream().available() > 0) {
                                 System.out.println("InputStreamThread > getInputStream().available() : " + work.socket.getInputStream().available());
