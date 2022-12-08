@@ -29,7 +29,7 @@ public class InputStreamThread extends Thread {
                     try {
 //                        System.out.println("work isworking data size " + work.isWorking + ", " + work.data);
                         //output할 데이터가 있을 경우
-                        if (work.socket != null && work.socket.isConnected()) {
+                        if (work.socket != null && !work.socket.isClosed()) {
                             if (!work.isWorking && work.data != null) {
                                 synchronized (WorkThread.WORK_SOCKET_LIST) {
                                     WorkThread.WORK_SOCKET_LIST.add(work);
@@ -37,9 +37,6 @@ public class InputStreamThread extends Thread {
                                 }
                                 work.isWorking = true;
                             }
-                            System.out.println("InputStreamThread > socket.isConnected() : "+ work.socket.isConnected());
-                            System.out.println("InputStreamThread > socket.isClosed() : "+ work.socket.isClosed());
-                            System.out.println("InputStreamThread > socket : "+ work.socket);
 
                             //input할 데이터가 있을 경우
                             if (!work.isWorking && work.socket.getInputStream().available() > 0) {
