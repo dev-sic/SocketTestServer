@@ -118,7 +118,7 @@ public class WorkThread extends Thread {
                                     System.out.println("WorkThread > WORK_SOCKET_LIST isWorking 확인 : "+workSocket.isWorking);
                                 });
                                 for(int i = 0; i< sockets.size(); i++){
-                                    System.out.println("WorkThread > sockets isWorking 확인 : " + i+1 + "번째 : " + sockets.get(i).isWorking);
+                                    System.out.println("WorkThread > sockets isWorking 확인 : " + (i+1) + "번째 : " + sockets.get(i).isWorking);
                                 }
                             }
 

@@ -1,12 +1,13 @@
 package pe.socket.test.util;
 
-import pe.socket.test.WorkThread;
 import pe.socket.test.objects.WorkSocket;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+
+import static pe.socket.test.WorkThread.WORK_SOCKET_LIST;
 
 public class InputStreamThread extends Thread {
     public static List<WorkSocket> sockets = new ArrayList<>();
@@ -20,8 +21,8 @@ public class InputStreamThread extends Thread {
     @Override
     public void run() {
         super.run();
-        if (WorkThread.WORK_SOCKET_LIST == null) {
-            WorkThread.WORK_SOCKET_LIST = new ArrayList<>();
+        if (WORK_SOCKET_LIST == null) {
+            WORK_SOCKET_LIST = new ArrayList<>();
         }
         while (true) {
             synchronized (sockets) {
@@ -31,9 +32,9 @@ public class InputStreamThread extends Thread {
                         //output할 데이터가 있을 경우
                         if (work.socket != null && !work.socket.isClosed()) {
                             if (!work.isWorking && work.data != null) {
-                                synchronized (WorkThread.WORK_SOCKET_LIST) {
-                                    WorkThread.WORK_SOCKET_LIST.add(work);
-                                    System.out.println("InputStreamThread > WORK_SOCKET_LIST.size() : " + WorkThread.WORK_SOCKET_LIST.size());
+                                synchronized (WORK_SOCKET_LIST) {
+                                    WORK_SOCKET_LIST.add(work);
+                                    System.out.println("InputStreamThread > WORK_SOCKET_LIST.size() : " + WORK_SOCKET_LIST.size());
                                 }
                                 work.isWorking = true;
                             }
@@ -41,8 +42,9 @@ public class InputStreamThread extends Thread {
                             //input할 데이터가 있을 경우
                             if (!work.isWorking && work.socket.getInputStream().available() > 0) {
                                 System.out.println("InputStreamThread > getInputStream().available() : " + work.socket.getInputStream().available());
-                                synchronized (WorkThread.WORK_SOCKET_LIST) {
-                                    WorkThread.WORK_SOCKET_LIST.add(work);
+                                System.out.println("InputStreamThread > WORK_SOCKET_LIST.size() : " + WORK_SOCKET_LIST.size());
+                                synchronized (WORK_SOCKET_LIST) {
+                                    WORK_SOCKET_LIST.add(work);
                                 }
                                 work.isWorking = true;
                             }
