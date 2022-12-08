@@ -40,7 +40,7 @@ public class WorkThread extends Thread {
                 WorkSocket socket = null;
                 synchronized (WORK_SOCKET_LIST) {
                     if (WORK_SOCKET_LIST.size() > 0) {
-                        System.out.println("사이즈 : " + WORK_SOCKET_LIST.size());
+                        System.out.println("WorkThread > 사이즈 : " + WORK_SOCKET_LIST.size());
                         synchronized (WORK_SOCKET_LIST.get(0)) {
                             socket = WORK_SOCKET_LIST.get(0);
                         }
@@ -54,7 +54,6 @@ public class WorkThread extends Thread {
                     inputStream = socket.socket.getInputStream();
                     outputStream = socket.socket.getOutputStream();
 
-                    System.out.println("WorkThread > socket");
                     System.out.println("WorkThread > inputStream.available() : " + inputStream.available());
                     System.out.println("WorkThread > socket.data : " + socket.data);
 
@@ -123,17 +122,22 @@ public class WorkThread extends Thread {
                             synchronized (sockets) {
                                 sockets.forEach(workSocket -> {
                                     if(room.users.size() > 0) {
-                                        System.out.println("WorkThread > workSocket User name: " + workSocket.user.name);
-                                        System.out.println("WorkThread > 클라이언트로 신호 전송" + room.users.get(0).name);
+                                        System.out.println("WorkThread > sockets에서 user를 찾아서 data를 추가한다.");
+                                        System.out.println("WorkThread > workSocket.user.name : " + workSocket.user.name);
+                                        System.out.println("WorkThread > room.users.get(0).name(룸 첫번째 연결 유저 이름) : " + room.users.get(0).name);
                                         System.out.println("WorkThread > 같은지 여부 : "+ (workSocket.user == room.users.get(0)));
                                         if (workSocket.user == room.users.get(0)) {
+                                            System.out.println("WorkThread > 같다!"+ (workSocket.user == room.users.get(0)));
                                             workSocket.data = h.getHeader();
                                         }
                                     }
                                 });
                             }
                         } else if (header.code == Header.MESSAGE) {
-
+                            System.out.println("WorkThread > code MESSAGE");
+                            synchronized (sockets) {
+                                socket.isWorking = false;
+                            }
                         }
 
 
